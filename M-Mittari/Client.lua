@@ -1,10 +1,10 @@
 ESX = nil
 
 Citizen.CreateThread(function()
-	while ESX == nil do
-		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-		Citizen.Wait(0)
-	end
+    while ESX == nil do
+        TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+        Citizen.Wait(0)
+    end
 end)
 
 function round(n)
@@ -18,6 +18,7 @@ local bensanumvari = "#ffff00"
 local naytaHUD = true
 local bensa = 65
 local bensanPoistoAjoittain = 30000
+
 
 RegisterCommand("mittari", function()
     if not IsPedInAnyVehicle(PlayerPedId(), false) then
@@ -70,15 +71,15 @@ CreateThread(function()
             local br, bg, bb = hexToRGB(bensavari)
             local bnr, bng, bnb = hexToRGB(bensanumvari)
 
-            drawText(7, 0.5, 0.93, 0.0, 0.0, tostring(kmh), 0.63, 0.63, nr, ng, nb, 255)
-            drawText(7, 0.538, 0.93, 0.0, 0.0, "KM/H", 0.63, 0.63, kr, kg, kb, 255)
+            drawText(7, 0.5, 0.93, 0.0, 0.0, tostring(kmh), 0.55, 0.55, nr, ng, nb, 255)
+            drawText(7, 0.538, 0.93, 0.0, 0.0, "KM/H", 0.55, 0.55, kr, kg, kb, 255)
             drawText(7, 0.519, 0.96, 0.0, 0.0, "Bensa:", 0.4, 0.4, br, bg, bb, 255)
             drawText(7, 0.544, 0.96, 0.0, 0.0, tostring(fuelLevel), 0.4, 0.4, bnr, bng, bnb, 255)
 
             if fuelLevel <= 0 then
-                SetVehicleEngineOn(vehicle, false, true, true)
-                DisableControlAction(0, 71, true)
-                DisableControlAction(0, 72, true)
+                SetVehicleEngineOn(vehicle,false,true,true)
+                DisableControlAction(0 ,71 ,true) 
+                DisableControlAction(0 ,72 ,true) 
             end
         end
         Wait(sleep)
@@ -92,7 +93,7 @@ CreateThread(function()
             local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
             local currentFuel = GetVehicleFuelLevel(vehicle)
             if currentFuel > 0 then
-                SetVehicleFuelLevel(vehicle, currentFuel - 1)
+                SetVehicleFuelLevel(vehicle,currentFuel -1)
             end
         end
     end
@@ -100,7 +101,7 @@ end)
 
 function InitializeVehicleFuel(vehicle)
     if DoesEntityExist(vehicle) and not IsEntityDead(vehicle) then
-        SetVehicleFuelLevel(vehicle, bensa)
+        SetVehicleFuelLevel(vehicle,bensa)
     end
 end
 
@@ -110,27 +111,27 @@ AddEventHandler('entityCreated', function(entity)
     end
 end)
 
-function drawText(fontId, x, y, width, height, text, scaleX, scaleY, r, g, b, a)
+function drawText(fontId,x,y,width,height,text,sx ,sy,r,g,b,a)
     SetTextFont(fontId)
     SetTextProportional(1)
-    SetTextScale(scaleX, scaleY)
-    SetTextColour(r, g, b, a)
-    SetTextDropShadow(0, 0, 0 ,0 ,255)
-    SetTextEdge(1 ,0 ,0 ,0 ,255)
-    SetTextDropShadow()
+    SetTextScale(sx ,sy)
+    SetTextColour(r,g,b,a or 255)
+    SetTextDropShadow(1 ,1 ,1 ,1 ,255)
+    SetTextEdge(1 ,1 ,1 ,1 ,255)
     SetTextOutline()
     SetTextCentre(true)
-    SetTextEntry("STRING")
-    AddTextComponentString(text)
-    DrawText(x ,y)
+    BeginTextCommandDisplayText("STRING")
+    AddTextComponentSubstringPlayerName(text)
+    EndTextCommandDisplayText(x,y)
 end
 
 function hexToRGB(hex)
-    hex = hex:gsub("#", "")
-    return tonumber("0x"..hex:sub(1 ,2)), tonumber("0x"..hex:sub(3 ,4)), tonumber("0x"..hex:sub(5 ,6))
+    hex=hex:gsub("#","")
+	return tonumber("0x"..hex:sub(1 ,2)),tonumber("0x"..hex:sub(3 ,4)),tonumber("0x"..hex:sub(5 ,6))
 end
 
 RegisterNetEvent("PaivitaMittari")
 AddEventHandler("PaivitaMittari", function(numero ,kmh ,bensa ,bensanum)
-    numerovari ,kmhvari ,bensavari ,bensanumvari = numero ,kmh ,bensa ,bensanum
+	numerovari ,kmhvari ,bensavari ,bensanumvari=numero ,kmh ,bensa ,bensanum 
 end)
+
